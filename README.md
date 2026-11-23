@@ -2,9 +2,9 @@
 
 **Discover a trip. Follow the route. Make it your own.**
 
-Roadtrip is a website where people share road trips they've taken. You can look at someone's trip on a map, see their stops and tips, and copy it into your own account with one click (we call this **Recreate Trip**). Then you can change it however you want.
+Roadtrip is a website where people share road trips they've taken. You can look at someone's trip on a map, see their stops and tips, and copy it into your own account with one click. Then you can change it however you want.
 
-Design: [Figma file](https://www.figma.com/design/fX7ksWs9fgRN2cOkmcq6vE) (page 1 is the roadmap, page 2 is the screens).
+
 
 ## What you can do right now
 
@@ -109,13 +109,6 @@ DATABASE_URL=postgresql://roadtrip:roadtrip@localhost:5432/roadtrip_test npx -w 
 | GET | `/me/trips`, `/me/saved` | Your trips and your saved trips |
 | GET | `/geo/search?q=` | Search for a place |
 
-## Putting it online
-
-- **Database, accounts and photos:** make a free Supabase project.
-- **Server:** deploy `apps/api` to Render.
-- **Website:** deploy `apps/web` to Vercel and set `VITE_API_URL` to your Render link.
-
-Note: Render's free plan goes to sleep when nobody is using it, so the first page load can take a few seconds.
 
 ## Later (Phase 2)
 
