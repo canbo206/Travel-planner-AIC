@@ -5,6 +5,7 @@ import { env } from './env.js';
 import { errorHandler, notFoundHandler } from './middleware/error.js';
 import { geoRouter } from './routes/geo.js';
 import { meRouter } from './routes/me.js';
+import { tripsRouter, uploadsRouter } from './routes/trips.js';
 
 export function createApp() {
   const app = express();
@@ -20,6 +21,8 @@ export function createApp() {
 
   app.use('/me', meRouter);
   app.use('/geo', geoRouter);
+  app.use('/trips', tripsRouter);
+  app.use('/uploads', uploadsRouter);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

@@ -20,7 +20,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const qc = useQueryClient();
   const me = useQuery({
     queryKey: ['me'],
-    queryFn: () => apiFetch<UserSummary>('/me').catch(() => null),
+    queryFn: async () => {
+      // Don't ask the API who we are when there are no credentials to send.
+      const hasSession = supabase
+        ? Boolean((await supabase.auth.getSession()).data.session)
+        : Boolean(localStorage.getItem(DEV_USER_KEY));
+      return hasSession ? apiFetch<UserSummary>('/me').catch(() => null) : null;
+    },
     staleTime: Infinity,
   });
 

@@ -1,0 +1,196 @@
+/* Figma: "Screen 2 · Trip Detail" — HTML & CSS panel */
+.trip-detail {
+  display: grid;
+  grid-template-columns: 1fr 540px;
+  height: calc(100vh - var(--nav-height));
+}
+.trip-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 28px;
+  background: var(--surface);
+  overflow-y: auto;
+  border-left: 1px solid var(--border);
+}
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+.trip-panel h1 {
+  font-size: 28px;
+  margin: 0;
+}
+.byline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.avatar.small {
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+  background: #c9b8e8;
+}
+.source-credit {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--accent-soft);
+  font-size: 13px;
+  font-weight: 500;
+}
+.source-credit a {
+  color: var(--accent);
+  font-weight: 600;
+}
+.description {
+  margin: 0;
+  line-height: 1.5;
+}
+.hint {
+  margin: -8px 0 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.stat {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+.grow {
+  flex: 1;
+}
+.visibility-select {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.day-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tab {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 13px;
+}
+.tab.active {
+  background: var(--text);
+  color: #fff;
+  border-color: transparent;
+}
+
+.stop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.stop {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg);
+}
+.stop:hover {
+  border-color: var(--primary);
+}
+.stop-number {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  font-size: 13px;
+}
+.stop-text {
+  flex: 1;
+  min-width: 0;
+}
+.stop-text h4 {
+  margin: 4px 0;
+  font-size: 15px;
+}
+.note {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+.activities {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+}
+.photo-strip {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  overflow-x: auto;
+}
+.photo-strip figure {
+  margin: 0;
+}
+.photo-strip figcaption {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.stop-photo {
+  width: 72px;
+  height: 72px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+@media (max-width: 900px) {
+  .trip-detail {
+    grid-template-columns: 1fr;
+    grid-template-rows: 45vh auto;
+    height: auto;
+  }
+  .trip-panel {
+    border-left: 0;
+  }
+}
+
+.trip-panel > * {
+  flex-shrink: 0;
+}

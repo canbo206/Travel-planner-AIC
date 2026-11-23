@@ -1,0 +1,46 @@
+/* Figma: Screen 2/3 map — numbered green markers, orange route line. */
+.map {
+  position: relative;
+  min-height: 320px;
+  height: 100%;
+  background: #e6ede4;
+}
+.map-canvas {
+  position: absolute;
+  inset: 0;
+}
+.map-marker {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s;
+}
+.map-marker.active,
+.map-marker:hover {
+  transform: scale(1.2);
+  background: var(--accent);
+}
+.route-toast {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--text);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
