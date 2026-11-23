@@ -1,0 +1,146 @@
+// Data model for the road trip platform.
+// A trip is an ordered list of Stops joined by Segments. Each Segment has a
+// transport mode, so Phase 2 (flights, trains, multi-city) adds new modes
+// instead of new tables.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Visibility {
+  PRIVATE
+  UNLISTED
+  PUBLIC
+}
+
+enum TravelType {
+  ROAD_TRIP
+  GENERAL
+}
+
+enum TransportMode {
+  DRIVE
+  FLIGHT
+  TRAIN
+  BUS
+  FERRY
+  WALK
+}
+
+model User {
+  /// Same id as the auth provider's user id (Supabase `sub`).
+  id          String      @id
+  username    String      @unique
+  displayName String?
+  avatarUrl   String?
+  trips       Trip[]
+  saves       SavedTrip[]
+  photos      Photo[]
+  createdAt   DateTime    @default(now())
+}
+
+model Trip {
+  id             String     @id @default(cuid())
+  ownerId        String
+  owner          User       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  title          String
+  description    String?
+  travelType     TravelType @default(ROAD_TRIP)
+  visibility     Visibility @default(PRIVATE)
+  durationDays   Int?
+  startDate      DateTime?  @db.Date
+  coverImageUrl  String?
+  /// Cached totals, recomputed whenever the stops change.
+  totalDistanceM Int?
+  totalDurationS Int?
+
+  /// "Recreate Trip" lineage: the trip this one was copied from.
+  sourceTripId  String?
+  sourceTrip    Trip?   @relation("Recreations", fields: [sourceTripId], references: [id], onDelete: SetNull)
+  recreations   Trip[]  @relation("Recreations")
+  recreateCount Int     @default(0)
+
+  stops     Stop[]
+  segments  Segment[]
+  saves     SavedTrip[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@index([visibility, createdAt])
+  @@index([visibility, recreateCount])
+  @@index([ownerId])
+}
+
+model Stop {
+  id         String   @id @default(cuid())
+  tripId     String
+  trip       Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  position   Int
+  dayNumber  Int?
+  name       String
+  lat        Float
+  lng        Float
+  placeId    String?
+  notes      String?
+  activities String[] @default([])
+
+  /// When this stop was copied by "Recreate Trip", the stop it came from.
+  /// Used to show the original traveler's photos without copying files.
+  sourceStopId String?
+  sourceStop   Stop?   @relation("StopCopies", fields: [sourceStopId], references: [id], onDelete: SetNull)
+  copies       Stop[]  @relation("StopCopies")
+
+  photos       Photo[]
+  segmentsFrom Segment[] @relation("SegmentFrom")
+  segmentsTo   Segment[] @relation("SegmentTo")
+
+  @@index([tripId, position])
+}
+
+/// A leg between two consecutive stops. Geometry is cached so viewing a trip
+/// never calls the routing API.
+model Segment {
+  id         String        @id @default(cuid())
+  tripId     String
+  trip       Trip          @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  fromStopId String
+  fromStop   Stop          @relation("SegmentFrom", fields: [fromStopId], references: [id], onDelete: Cascade)
+  toStopId   String
+  toStop     Stop          @relation("SegmentTo", fields: [toStopId], references: [id], onDelete: Cascade)
+  mode       TransportMode @default(DRIVE)
+  /// GeoJSON LineString, [lng, lat] pairs.
+  geometry   Json?
+  distanceM  Int?
+  durationS  Int?
+  isEstimate Boolean       @default(false)
+
+  @@index([tripId])
+}
+
+model Photo {
+  id         String   @id @default(cuid())
+  stopId     String
+  stop       Stop     @relation(fields: [stopId], references: [id], onDelete: Cascade)
+  uploaderId String
+  uploader   User     @relation(fields: [uploaderId], references: [id], onDelete: Cascade)
+  url        String
+  caption    String?
+  createdAt  DateTime @default(now())
+
+  @@index([stopId])
+}
+
+model SavedTrip {
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@id([userId, tripId])
+}

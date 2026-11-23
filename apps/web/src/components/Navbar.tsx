@@ -1,8 +1,12 @@
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
+import { useAuth } from '../lib/auth';
 
 const navClass = ({ isActive }: { isActive: boolean }) => `nav-link${isActive ? ' active' : ''}`;
 
 export function Navbar() {
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <header className="navbar">
       <nav>
@@ -20,9 +24,25 @@ export function Navbar() {
         </NavLink>
       </nav>
       <div className="nav-actions">
-        <button className="btn btn-primary" type="button">
+        <Link className="btn btn-primary" to="/trips/new">
           + New trip
-        </button>
+        </Link>
+        {user ? (
+          <button
+            className="avatar"
+            title={`Signed in as @${user.username} — click to sign out`}
+            onClick={async () => {
+              await signOut();
+              navigate('/');
+            }}
+          >
+            {user.username.slice(0, 1).toUpperCase()}
+          </button>
+        ) : (
+          <Link className="nav-link" to="/sign-in">
+            Sign in
+          </Link>
+        )}
       </div>
     </header>
   );
