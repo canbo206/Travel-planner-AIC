@@ -40,18 +40,18 @@ packages/
 
 You need **Node 22** and **Docker** installed.
 
-1. Install everything:
-   ```bash
-   npm install
-   ```
-2. Start the database:
-   ```bash
-   docker compose up -d
-   ```
-3. Copy the settings files:
+1. Copy the settings files:
    ```bash
    cp apps/api/.env.example apps/api/.env
    cp apps/web/.env.example apps/web/.env
+   ```
+2. Install everything:
+   ```bash
+   npm install
+   ```
+3. Start the database (open Docker Desktop first):
+   ```bash
+   docker compose up -d
    ```
 4. Set up the database and add some example trips:
    ```bash
