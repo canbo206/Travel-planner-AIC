@@ -36,33 +36,51 @@ packages/
 | 4 · Integrations & Deploy | `apps/api/src/services`, `apps/api/src/middleware`, GitHub Actions |
 | Everyone | `packages/shared` (talk to the team before changing it) |
 
-## How to run it on your computer
+## Before you start: install these once
 
-You need **Node 22** and **Docker** installed.
+You need two things on your computer: **Node.js** (runs the app) and **PostgreSQL** (the database where trips, stops and users are saved).
 
-1. Copy the settings files:
-   ```bash
-   cp apps/api/.env.example apps/api/.env
-   cp apps/web/.env.example apps/web/.env
-   ```
-2. Install everything:
-   ```bash
-   npm install
-   ```
-3. Start the database (open Docker Desktop first):
+### 1. Node.js 22
+
+1. Go to [nodejs.org](https://nodejs.org), download version **22**, and run the installer.
+2. Check it worked. Open Terminal and type `node -v`. It should print something starting with `v22`.
+
+### 2. A database: pick one option
+
+**Option A: Docker Desktop (recommended, what the team uses)**
+
+1. Download Docker Desktop from [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop/).
+   - Mac: pick **Apple chip** or **Intel chip** (Apple menu → About This Mac shows which one you have).
+   - Windows: say yes if it asks to install or turn on **WSL 2**, then restart.
+2. Open Docker Desktop and finish the welcome screens (you can skip signing in). Wait until it says **Engine running**.
+3. In Terminal, from the project folder, start the database:
    ```bash
    docker compose up -d
    ```
-4. Set up the database and add some example trips:
-   ```bash
-   npm run db:migrate
-   npm run db:seed
-   ```
-5. Start the app:
-   ```bash
-   npm run dev
-   ```
-6. Open **http://localhost:5173** in your browser.
+   Check it's running with `docker ps`. You should see a line with `postgres`.
+
+Docker Desktop needs to be open whenever you work on the app. If it's closed, run `docker compose up -d` again after opening it.
+
+**Option B: Postgres.app (Mac only, no Docker)**
+
+1. Download it from [postgresapp.com](https://postgresapp.com), drag it into Applications, and open it.
+2. Click **Initialize**. You'll see an elephant icon in the menu bar while it's running. No password needed.
+
+**Already have Postgres?** If you installed it before (for example from postgresql.org with pgAdmin), you can use that instead. `npm run setup` will ask for the password you chose back then. Only run one Postgres at a time. If Docker says port 5432 is already in use, quit your other Postgres first.
+
+## How to run it on your computer
+
+Make sure your database is running (Docker Desktop open, or Postgres.app running). Then:
+
+```bash
+npm install
+npm run setup
+npm run dev
+```
+
+Open **http://localhost:5173** in your browser.
+
+`npm run setup` does the boring parts for you: it copies the settings files, creates the database, sets up the tables and adds some example trips. If it asks for a **Postgres admin password**, type the one you picked when you installed Postgres (letters won't show while you type). You only run setup once; after that it's just `npm run dev`.
 
 To sign in, just type any username. You don't need a password while testing on your own computer. Tip: sign in with two different names to try recreating someone else's trip.
 
@@ -80,6 +98,7 @@ The app works without these, but some things are simplified:
 
 | Command | What it does |
 | --- | --- |
+| `npm run setup` | First-time setup: settings, database, tables, example trips |
 | `npm run dev` | Starts the server and the website |
 | `npm test` | Runs the tests |
 | `npm run typecheck` | Checks the code for type mistakes |
