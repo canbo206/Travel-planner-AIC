@@ -138,3 +138,85 @@
   align-items: center;
   gap: 16px;
 }
+
+.chip-divider {
+  width: 1px;
+  align-self: stretch;
+  margin: 4px 4px;
+  background: var(--border);
+}
+.results-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 20px;
+  font-size: 14px;
+  scroll-margin-top: calc(var(--nav-height) + 16px);
+}
+.empty-state p {
+  margin: 0 0 12px;
+}
+
+/* My Trips */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.page-header h1 {
+  margin: 0 0 6px;
+}
+.summary-stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.summary-stats li {
+  padding: 12px 16px;
+  min-width: 120px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.summary-stats strong {
+  display: block;
+  font-size: 22px;
+}
+.summary-stats span {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.chip .count {
+  margin-left: 6px;
+  opacity: 0.7;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 20px 16px;
+  }
+  .page h1 {
+    font-size: 26px;
+  }
+  .discover-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    max-width: 100%;
+    padding-bottom: 4px;
+  }
+  .chip {
+    flex: none;
+  }
+  .trip-grid {
+    grid-template-columns: 1fr;
+  }
+}
