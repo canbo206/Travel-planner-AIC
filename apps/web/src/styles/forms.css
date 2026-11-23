@@ -1,17 +1,18 @@
 .card {
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 28px 32px;
+  gap: 18px;
+  padding: 32px;
+  border-top: 8px solid var(--mustard);
 }
 .form h1 {
-  font-size: 24px;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
   margin: 0;
 }
 
@@ -19,22 +20,33 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
 }
 .field input,
 .field textarea,
 .field select,
 .input {
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
+  padding: 11px 14px;
+  border: 2px solid var(--control);
+  border-radius: 0;
+  background: var(--paper);
   font-weight: 400;
-  font-size: 15px;
+  font-size: 16px;
+  transition: border-color 0.15s;
+}
+.field input:focus,
+.field textarea:focus,
+.input:focus {
+  border-color: var(--ink);
+  outline: none;
+}
+::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
 }
 
 .auth-page {
-  max-width: 440px;
+  max-width: 480px;
   padding-top: 64px;
 }

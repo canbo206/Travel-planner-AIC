@@ -1,20 +1,43 @@
-/* Design tokens: same names and values as the Figma "Tokens" collection. */
+/*
+ * Roadtrip palette: four colours, taken from the road itself.
+ *   mustard  the centre line and the warning sign      #e1ac10
+ *   ink      asphalt, and every word on the page       #0b0b0b
+ *   blue     the one primary action                    #24338f
+ *   paper    the road atlas page                       #f2f2f0
+ * Everything else is a mix of these four (tone steps), never a new colour.
+ * Mustard is a field or a mark, never text on paper (contrast is too low).
+ */
 :root {
-  --bg: #f7f5f0;
-  --surface: #ffffff;
-  --border: #e4e0d8;
-  --text: #1f2421;
-  --text-muted: #6b706c;
-  --primary: #1f6f5c;
-  --primary-soft: #dcefe8;
-  --accent: #e8743b;
-  --accent-soft: #fce6da;
-  --danger: #c0392b;
+  --mustard: #e1ac10;
+  --ink: #0b0b0b;
+  --blue: #24338f;
+  --paper: #f2f2f0;
+
+  /* Roles */
+  --bg: color-mix(in srgb, var(--paper) 94%, var(--ink));
+  --surface: var(--paper);
+  --raised: color-mix(in srgb, var(--paper) 88%, var(--ink));
+  --text: var(--ink);
+  --text-muted: color-mix(in srgb, var(--ink) 74%, var(--paper));
+  --primary: var(--blue);
+  --on-primary: var(--paper);
+  --signal: var(--mustard);
+  --signal-soft: color-mix(in srgb, var(--mustard) 28%, var(--paper));
+  --control: color-mix(in srgb, var(--ink) 40%, var(--paper));
+
+  /* Older names still used by component styles */
+  --border: var(--raised);
+  --primary-soft: var(--signal-soft);
+  --accent: var(--mustard);
+  --accent-soft: var(--signal-soft);
+  --danger: var(--ink);
+
+  --font: 'Chivo', system-ui, sans-serif;
   --space-sm: 8px;
   --space-md: 16px;
   --space-lg: 24px;
-  --radius-md: 12px;
-  --nav-height: 61px;
+  --radius-md: 0;
+  --nav-height: 60px;
 }
 
 * {
@@ -31,7 +54,9 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.45;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -53,11 +78,16 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 3px solid var(--blue);
   outline-offset: 2px;
 }
 
-/* ---------- Navbar ---------- */
+::selection {
+  background: var(--mustard);
+  color: var(--ink);
+}
+
+/* ---------- Navbar: the road ---------- */
 .navbar {
   position: sticky;
   top: 0;
@@ -65,28 +95,39 @@ button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   height: var(--nav-height);
   padding: 0 32px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
+  background: var(--ink);
+  color: var(--paper);
 }
 .navbar nav {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
+  min-width: 0;
 }
 .logo {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--primary);
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  color: var(--mustard);
 }
 .nav-link {
-  color: var(--text-muted);
-  font-weight: 500;
+  color: color-mix(in srgb, var(--paper) 78%, var(--ink));
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+  transition: color 0.15s;
+}
+.nav-link:hover {
+  color: var(--paper);
 }
 .nav-link.active {
-  color: var(--text);
-  font-weight: 600;
+  color: var(--paper);
+  border-bottom: 3px solid var(--mustard);
+  padding: 19px 0 16px;
 }
 .nav-actions {
   display: flex;
@@ -96,49 +137,69 @@ button {
 .avatar {
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #e8c7b4;
-  font-size: 13px;
-  font-weight: 700;
+  width: 34px;
+  height: 34px;
+  padding: 0;
   border: 0;
+  background: var(--mustard);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 900;
 }
 
-/* ---------- Buttons ---------- */
+/* ---------- Buttons: one shape (square), one primary colour ---------- */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 10px 16px;
-  border-radius: 10px;
-  font-weight: 600;
-  border: 1px solid transparent;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 2px solid transparent;
+  border-radius: 0;
+  font-weight: 700;
+  font-size: 15px;
   white-space: nowrap;
+  transition:
+    transform 0.12s,
+    background-color 0.15s;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(1px);
 }
 .btn:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: not-allowed;
 }
-.btn-primary {
-  background: var(--primary);
-  color: #fff;
-}
+.btn-primary,
 .btn-accent {
-  background: var(--accent);
-  color: #fff;
+  background: var(--blue);
+  color: var(--paper);
+}
+.btn-primary:hover:not(:disabled),
+.btn-accent:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--blue) 85%, var(--ink));
 }
 .btn-secondary {
-  background: var(--surface);
-  border-color: var(--border);
+  background: transparent;
+  border-color: var(--ink);
+  color: var(--ink);
+}
+.btn-secondary:hover:not(:disabled) {
+  background: var(--signal-soft);
+}
+.navbar .btn-primary {
+  min-height: 38px;
+  padding: 6px 14px;
 }
 .btn-link {
   background: none;
   border: 0;
   padding: 0;
-  color: var(--primary);
-  font-weight: 600;
+  color: var(--blue);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 /* ---------- Generic page ---------- */
@@ -148,26 +209,71 @@ button {
   gap: 20px;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 32px;
+  padding: 40px 32px 96px;
 }
 .page h1 {
   font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   margin: 0;
 }
 .subtitle {
   color: var(--text-muted);
   margin: 0;
+  font-size: 17px;
+  max-width: 60ch;
 }
 .muted {
   color: var(--text-muted);
 }
 .empty-state {
-  padding: 48px;
-  text-align: center;
-  border: 1px dashed var(--border);
-  border-radius: var(--radius-md);
-  color: var(--text-muted);
+  padding: 40px;
+  background: var(--raised);
+  color: var(--text);
+}
+.empty-state a {
+  color: var(--blue);
+  font-weight: 700;
+  text-decoration: underline;
 }
 .error-text {
-  color: var(--danger);
+  color: var(--ink);
+  font-weight: 700;
+  background: var(--signal-soft);
+  border-left: 4px solid var(--mustard);
+  padding: 8px 12px;
+}
+
+@media (max-width: 640px) {
+  .navbar {
+    padding: 0 16px;
+    gap: 12px;
+  }
+  .navbar nav {
+    gap: 14px;
+  }
+  .logo {
+    font-size: 18px;
+  }
+  .nav-link {
+    font-size: 14px;
+  }
+  /* On a phone the wordmark is the way to Discover. */
+  .navbar nav .nav-link:nth-of-type(2) {
+    display: none;
+  }
+  .navbar .btn-label {
+    display: none;
+  }
+  .navbar .btn-primary {
+    padding: 6px 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
 }

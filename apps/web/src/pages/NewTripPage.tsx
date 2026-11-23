@@ -23,7 +23,7 @@ export function NewTripPage() {
     <main className="page auth-page">
       <form className="card form" onSubmit={onSubmit}>
         <h1>Share a road trip</h1>
-        <p className="muted">Give it a name — you'll add stops on the map next. It stays private until you publish it.</p>
+        <p className="muted">Give it a name. You'll add stops on the map next. It stays private until you publish it.</p>
         <label className="field">
           Trip name
           <input

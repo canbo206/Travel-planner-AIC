@@ -24,13 +24,13 @@ export function Navbar() {
         </NavLink>
       </nav>
       <div className="nav-actions">
-        <Link className="btn btn-primary" to="/trips/new">
-          + New trip
+        <Link className="btn btn-primary" to="/trips/new" aria-label="New trip">
+          +<span className="btn-label"> New trip</span>
         </Link>
         {user ? (
           <button
             className="avatar"
-            title={`Signed in as @${user.username} — click to sign out`}
+            title={`Signed in as @${user.username} (click to sign out)`}
             onClick={async () => {
               await signOut();
               navigate('/');
