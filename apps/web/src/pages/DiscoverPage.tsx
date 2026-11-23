@@ -1,7 +1,7 @@
 /** Figma: "Screen 1 · Discover" — search, filter chips, trip card grid. */
 import type { DiscoverQuery } from '@roadtrip/shared';
-import { useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useSearchParams } from 'react-router';
 import { TripCard } from '../components/TripCard';
 import { useDiscover } from '../lib/queries';
 import '../styles/discover.css';
@@ -13,6 +13,14 @@ const LENGTH_CHIPS: { label: string; min?: number; max?: number }[] = [
   { label: '1 week+', min: 8 },
 ];
 
+/** Quick searches. Each one fills the search box with a term that matches trip titles and stops. */
+const THEME_CHIPS: { label: string; q: string }[] = [
+  { label: 'Coastal', q: 'coast' },
+  { label: 'National parks', q: 'national park' },
+  { label: 'From Seattle', q: 'seattle' },
+  { label: 'Utah', q: 'utah' },
+];
+
 const PAGE_SIZE = 12;
 
 export function DiscoverPage() {
@@ -22,9 +30,11 @@ export function DiscoverPage() {
   const sort = (params.get('sort') as DiscoverQuery['sort']) ?? 'new';
   const page = Number(params.get('page') ?? 1);
   const chip = LENGTH_CHIPS[length] ?? LENGTH_CHIPS[0]!;
+  const hasFilters = Boolean(q) || length > 0 || sort !== 'new';
 
   const [search, setSearch] = useState(q);
   useEffect(() => setSearch(q), [q]);
+  const resultsTop = useRef<HTMLDivElement>(null);
 
   function update(next: Record<string, string | number | null>) {
     const p = new URLSearchParams(params);
@@ -36,6 +46,16 @@ export function DiscoverPage() {
     setParams(p, { replace: true });
   }
 
+  function clearFilters() {
+    setSearch('');
+    setParams(new URLSearchParams(), { replace: true });
+  }
+
+  function goToPage(n: number) {
+    update({ page: n });
+    resultsTop.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   // Debounced search-as-you-type.
   useEffect(() => {
     const t = setTimeout(() => {
@@ -45,7 +65,7 @@ export function DiscoverPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  const { data, isLoading, isError, error, isFetching } = useDiscover({
+  const { data, isLoading, isError, error, isFetching, refetch } = useDiscover({
     q: q || undefined,
     minDays: chip.min,
     maxDays: chip.max,
@@ -60,17 +80,20 @@ export function DiscoverPage() {
       <h1>Find your next road trip</h1>
       <p className="subtitle">Real routes from real travelers. Recreate any trip in one click.</p>
 
-      <input
-        className="search"
-        type="search"
-        placeholder="Search a place or route — e.g. Oregon Coast"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        aria-label="Search trips"
-      />
+      <div className="search-row">
+        <input
+          className="search"
+          type="search"
+          placeholder="Search a place or route — e.g. Oregon Coast"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => e.key === 'Escape' && setSearch('')}
+          aria-label="Search trips"
+        />
+      </div>
 
       <div className="discover-controls">
-        <div className="chips" role="group" aria-label="Trip length">
+        <div className="chips" role="group" aria-label="Filters">
           {LENGTH_CHIPS.map((c, i) => (
             <button
               key={c.label}
@@ -81,6 +104,24 @@ export function DiscoverPage() {
               {c.label}
             </button>
           ))}
+          <span className="chip-divider" aria-hidden />
+          {THEME_CHIPS.map((c) => {
+            const active = q.toLowerCase() === c.q;
+            return (
+              <button
+                key={c.label}
+                className={`chip${active ? ' active' : ''}`}
+                onClick={() => {
+                  const next = active ? '' : c.q;
+                  setSearch(next);
+                  update({ q: next });
+                }}
+                aria-pressed={active}
+              >
+                {c.label}
+              </button>
+            );
+          })}
         </div>
         <label className="sort">
           Sort
@@ -91,12 +132,56 @@ export function DiscoverPage() {
         </label>
       </div>
 
-      {isError && <p className="error-text">Couldn't load trips: {(error as Error).message}</p>}
-      {isLoading && <div className="trip-grid">{Array.from({ length: 6 }, (_, i) => <div key={i} className="trip-card skeleton" />)}</div>}
+      <div ref={resultsTop} className="results-bar" aria-live="polite">
+        {data && (
+          <span className="muted">
+            {data.total === 0
+              ? 'No trips found'
+              : `${data.total} trip${data.total === 1 ? '' : 's'}${q ? ` matching “${q}”` : ''}`}
+            {isFetching && ' · updating…'}
+          </span>
+        )}
+        {hasFilters && (
+          <button className="btn-link" onClick={clearFilters}>
+            Clear filters
+          </button>
+        )}
+      </div>
+
+      {isError && (
+        <div className="empty-state">
+          <p className="error-text">Couldn't load trips: {(error as Error).message}</p>
+          <button className="btn btn-secondary" onClick={() => refetch()}>
+            Try again
+          </button>
+        </div>
+      )}
+
+      {isLoading && (
+        <div className="trip-grid">
+          {Array.from({ length: 6 }, (_, i) => (
+            <div key={i} className="trip-card skeleton" />
+          ))}
+        </div>
+      )}
 
       {data && data.items.length === 0 && (
         <div className="empty-state">
-          No trips match that yet. Try another search, or be the first to share one.
+          {hasFilters ? (
+            <>
+              <p>No trips match those filters yet.</p>
+              <button className="btn btn-secondary" onClick={clearFilters}>
+                Show all trips
+              </button>
+            </>
+          ) : (
+            <>
+              <p>No one has shared a trip yet.</p>
+              <Link className="btn btn-primary" to="/trips/new">
+                Share the first one
+              </Link>
+            </>
+          )}
         </div>
       )}
 
@@ -110,13 +195,13 @@ export function DiscoverPage() {
 
       {pages > 1 && (
         <nav className="pagination" aria-label="Pages">
-          <button className="btn btn-secondary" disabled={page <= 1} onClick={() => update({ page: page - 1 })}>
+          <button className="btn btn-secondary" disabled={page <= 1} onClick={() => goToPage(page - 1)}>
             ← Previous
           </button>
           <span className="muted">
             Page {page} of {pages}
           </span>
-          <button className="btn btn-secondary" disabled={page >= pages} onClick={() => update({ page: page + 1 })}>
+          <button className="btn btn-secondary" disabled={page >= pages} onClick={() => goToPage(page + 1)}>
             Next →
           </button>
         </nav>
