@@ -76,76 +76,90 @@ export function DiscoverPage() {
   const pages = data ? Math.max(1, Math.ceil(data.total / PAGE_SIZE)) : 1;
 
   return (
-    <main className="discover page">
-      <h1>Find your next road trip</h1>
-      <p className="subtitle">Real routes from real travelers. Recreate any trip in one click.</p>
+    <main className="discover">
+      <header className="discover-hero">
+        <div className="hero-inner">
+          <h1 className="hero-title">
+            <span className="line"><span>Pick a road.</span></span>
+            <span className="line"><span>Make it yours.</span></span>
+          </h1>
+          <p className="hero-lead">
+            Real road trips from real travelers. See the route, recreate it in one click, then change
+            anything.
+          </p>
 
-      <div className="search-row">
-        <input
-          className="search"
-          type="search"
-          placeholder="Search a place or route — e.g. Oregon Coast"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          onKeyDown={(e) => e.key === 'Escape' && setSearch('')}
-          aria-label="Search trips"
-        />
-      </div>
+          <input
+            className="search"
+            type="search"
+            placeholder="Search a place or route"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => e.key === 'Escape' && setSearch('')}
+            aria-label="Search trips"
+          />
 
-      <div className="discover-controls">
-        <div className="chips" role="group" aria-label="Filters">
-          {LENGTH_CHIPS.map((c, i) => (
-            <button
-              key={c.label}
-              className={`chip${i === length ? ' active' : ''}`}
-              onClick={() => update({ len: i })}
-              aria-pressed={i === length}
-            >
-              {c.label}
-            </button>
-          ))}
-          <span className="chip-divider" aria-hidden />
-          {THEME_CHIPS.map((c) => {
-            const active = q.toLowerCase() === c.q;
-            return (
-              <button
-                key={c.label}
-                className={`chip${active ? ' active' : ''}`}
-                onClick={() => {
-                  const next = active ? '' : c.q;
-                  setSearch(next);
-                  update({ q: next });
-                }}
-                aria-pressed={active}
-              >
-                {c.label}
-              </button>
-            );
-          })}
+          <div className="discover-controls">
+            <div className="chips" role="group" aria-label="Filters">
+              {LENGTH_CHIPS.map((c, i) => (
+                <button
+                  key={c.label}
+                  className={`chip${i === length ? ' active' : ''}`}
+                  onClick={() => update({ len: i })}
+                  aria-pressed={i === length}
+                >
+                  {c.label}
+                </button>
+              ))}
+              <span className="chip-divider" aria-hidden />
+              {THEME_CHIPS.map((c) => {
+                const active = q.toLowerCase() === c.q;
+                return (
+                  <button
+                    key={c.label}
+                    className={`chip${active ? ' active' : ''}`}
+                    onClick={() => {
+                      const next = active ? '' : c.q;
+                      setSearch(next);
+                      update({ q: next });
+                    }}
+                    aria-pressed={active}
+                  >
+                    {c.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
-        <label className="sort">
-          Sort
-          <select value={sort} onChange={(e) => update({ sort: e.target.value === 'new' ? null : e.target.value })}>
-            <option value="new">Newest</option>
-            <option value="popular">Most recreated</option>
-          </select>
-        </label>
-      </div>
+      </header>
 
+      <section className="page discover-results" aria-labelledby="results-heading">
+      <h2 id="results-heading" className="results-heading">
+        {q ? `Trips matching “${q}”` : chip.min || chip.max ? `${chip.label} trips` : 'All road trips'}
+      </h2>
       <div ref={resultsTop} className="results-bar" aria-live="polite">
         {data && (
           <span className="muted">
             {data.total === 0
               ? 'No trips found'
-              : `${data.total} trip${data.total === 1 ? '' : 's'}${q ? ` matching “${q}”` : ''}`}
+              : `${data.total} trip${data.total === 1 ? '' : 's'}`}
             {isFetching && ' · updating…'}
           </span>
         )}
-        {hasFilters && (
-          <button className="btn-link" onClick={clearFilters}>
-            Clear filters
-          </button>
-        )}
+        <div className="results-tools">
+          {hasFilters && (
+            <button className="btn-link" onClick={clearFilters}>
+              Clear filters
+            </button>
+          )}
+          <label className="sort">
+            Sort by
+            <select value={sort} onChange={(e) => update({ sort: e.target.value === 'new' ? null : e.target.value })}>
+              <option value="new">Newest</option>
+              <option value="popular">Most recreated</option>
+            </select>
+          </label>
+        </div>
       </div>
 
       {isError && (
@@ -206,6 +220,7 @@ export function DiscoverPage() {
           </button>
         </nav>
       )}
+      </section>
     </main>
   );
 }

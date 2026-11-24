@@ -100,7 +100,7 @@ export function MyTripsPage() {
 
       {trips.length > 0 && visible.length === 0 && (
         <div className="empty-state">
-          {filter === 'drafts' ? 'No drafts — every trip is shared.' : 'Nothing shared yet. Open a trip and set it to Public to share it.'}
+          {filter === 'drafts' ? 'No drafts. Every trip is shared.' : 'Nothing shared yet. Open a trip and set it to Public to share it.'}
         </div>
       )}
 
@@ -141,7 +141,7 @@ export function SavedPage() {
         <div className="empty-state">
           <p>Nothing saved yet.</p>
           <p>
-            Tap ♡ Save on any trip in <Link to="/">Discover</Link>.
+            Press Save on any trip in <Link to="/">Discover</Link>.
           </p>
         </div>
       )}
