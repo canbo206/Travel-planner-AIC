@@ -25,6 +25,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { formatDuration, formatMiles, type PlaceResult, type TripDetail } from '@roadtrip/shared';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
+import { CloseIcon } from '../components/CloseIcon';
 import { TripMap } from '../components/map/TripMap';
 import { usePlaceSearch, usePutStops, useTrip, useUpdateTrip, useUploadPhoto } from '../lib/queries';
 import '../styles/editor.css';
@@ -192,7 +193,7 @@ function Editor({ trip }: { trip: TripDetail }) {
   }
 
   const saveState = putStops.isError
-    ? 'Couldn’t save — retrying on next change'
+    ? 'Couldn’t save. Retrying on your next change'
     : dirty || putStops.isPending
       ? 'Saving…'
       : 'All changes saved';
@@ -203,7 +204,7 @@ function Editor({ trip }: { trip: TripDetail }) {
         <div className="source-banner">
           <span aria-hidden>↻</span>
           Based on @{trip.sourceTrip.owner.username}'s trip “{trip.sourceTrip.title}”. This is your
-          {trip.visibility === 'PRIVATE' ? ' private' : ''} copy — change anything.
+          {trip.visibility === 'PRIVATE' ? ' private' : ''} copy, so change anything.
         </div>
       )}
       <main className={`trip-editor${trip.sourceTrip ? ' with-banner' : ''}`}>
@@ -332,7 +333,7 @@ function SortableStop({ stop, number, dayLabel, dayCount, expanded, onToggle, on
             ))}
           </select>
           <button className="remove" onClick={onRemove} aria-label={`Remove ${stop.name}`}>
-            ✕
+            <CloseIcon />
           </button>
         </div>
 
@@ -357,8 +358,8 @@ function SortableStop({ stop, number, dayLabel, dayCount, expanded, onToggle, on
                       aria-label={`Remove ${a}`}
                       onClick={() => onChange({ activities: stop.activities.filter((x) => x !== a) })}
                     >
-                      ✕
-                    </button>
+            <CloseIcon />
+          </button>
                   </li>
                 ))}
               </ul>
@@ -443,7 +444,7 @@ function AddStop({ onAdd, near }: { onAdd: (p: PlaceResult) => void; near?: { la
     <div className={`add-stop${open ? ' open' : ''}`}>
       <input
         className="add-stop-search"
-        placeholder="+ Add a stop — search a place"
+        placeholder="+ Add a stop: search a place"
         value={text}
         onChange={(e) => {
           setText(e.target.value);

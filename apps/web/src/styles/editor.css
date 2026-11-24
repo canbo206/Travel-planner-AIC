@@ -1,17 +1,14 @@
-/* Figma: "Screen 3 · Trip Editor" — HTML & CSS panel */
+/* Trip editor: the itinerary on paper, the road on the right. */
 .source-banner {
   display: flex;
   gap: 10px;
   align-items: center;
   height: 48px;
   padding: 0 32px;
-  background: var(--accent-soft);
-  font-weight: 500;
-  font-size: 14px;
-}
-.source-banner span {
-  color: var(--accent);
+  background: var(--mustard);
+  color: var(--ink);
   font-weight: 700;
+  font-size: 15px;
 }
 
 .trip-editor {
@@ -26,10 +23,12 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 24px 28px;
+  padding: 28px;
   background: var(--surface);
   overflow-y: auto;
-  border-right: 1px solid var(--border);
+}
+.editor-panel > * {
+  flex-shrink: 0;
 }
 .editor-header {
   display: flex;
@@ -38,45 +37,52 @@
 .trip-title {
   flex: 1;
   min-width: 0;
-  font-size: 18px;
-  font-weight: 600;
-  padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  padding: 8px 12px;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: var(--bg);
+}
+.trip-title:hover,
+.trip-title:focus {
+  border-color: var(--ink);
+  outline: none;
 }
 .visibility {
   padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  font-weight: 700;
 }
 .description-input {
   resize: vertical;
 }
 
 .day-label {
-  margin: 8px 0 0;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: var(--text-muted);
+  margin: 10px 0 0;
+  padding: 4px 10px;
+  align-self: flex-start;
+  background: var(--ink);
+  color: var(--mustard);
+  font-size: 14px;
+  font-weight: 900;
   list-style: none;
 }
 .editor-stops {
-  gap: 8px;
+  gap: 6px;
 }
 .stop-row {
   list-style: none;
   background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
 }
 .stop-row.dragging {
   position: relative;
   z-index: 5;
-  background: var(--primary-soft);
-  border-color: var(--primary);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  background: var(--signal-soft);
+  box-shadow: 0 10px 24px rgb(11 11 11 / 0.2); /* taste-skill-ignore: lifted while dragged */
 }
 .stop-row-main {
   display: flex;
@@ -87,28 +93,30 @@
 .drag-handle {
   cursor: grab;
   touch-action: none;
-  color: var(--text-muted);
-  font-weight: 700;
+  color: var(--ink);
+  font-weight: 900;
   background: none;
   border: 0;
-  padding: 2px;
+  padding: 2px 4px;
 }
 .drag-handle:active {
   cursor: grabbing;
 }
 .stop-row .stop-number {
-  width: 24px;
-  height: 24px;
-  font-size: 11px;
+  width: 26px;
+  height: 26px;
+  font-size: 13px;
+  border-width: 2px;
 }
 .stop-number.new {
-  background: var(--accent);
+  background: var(--ink);
+  color: var(--mustard);
 }
 .stop-name {
   flex: 1;
   min-width: 0;
   text-align: left;
-  font-weight: 500;
+  font-weight: 700;
   background: none;
   border: 0;
   padding: 0;
@@ -116,34 +124,38 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.stop-name:hover {
+  text-decoration: underline;
+}
 .badge-new {
-  padding: 2px 8px;
-  border-radius: 999px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 11px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-muted);
 }
 .day-select {
   padding: 4px 6px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--surface);
-  font-size: 12px;
+  border: 2px solid var(--control);
+  border-radius: 0;
+  background: var(--paper);
+  font-size: 13px;
+  font-weight: 700;
 }
 .remove {
   background: none;
   border: 0;
-  color: var(--text-muted);
+  padding: 4px;
+  color: var(--ink);
+  font-weight: 700;
 }
 .remove:hover {
-  color: var(--danger);
+  background: var(--ink);
+  color: var(--mustard);
 }
 .stop-details {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 4px 12px 14px 46px;
+  padding: 4px 14px 16px 50px;
 }
 .stop-details textarea {
   resize: vertical;
@@ -160,73 +172,77 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  padding: 3px 4px 3px 10px;
-  border-radius: 999px;
-  background: var(--primary-soft);
-  color: var(--primary);
-  font-weight: 500;
+  padding: 4px 4px 4px 10px;
+  background: var(--signal-soft);
+  font-weight: 700;
 }
 .activity-chips button {
   background: none;
   border: 0;
-  color: inherit;
-  font-size: 11px;
+  font-size: 13px;
 }
 .photo-add {
   display: grid;
   place-items: center;
-  width: 72px;
-  height: 72px;
-  border: 1px dashed var(--border);
-  border-radius: 8px;
-  color: var(--text-muted);
-  font-size: 12px;
+  width: 84px;
+  height: 84px;
+  border: 2px dashed var(--control);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
 }
+.photo-add:hover {
+  background: var(--signal-soft);
+}
 .small {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .add-stop {
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  overflow: hidden;
-}
-.add-stop.open,
-.add-stop:focus-within {
-  border-color: var(--primary);
+  border: 3px solid var(--ink);
+  background: var(--paper);
 }
 .add-stop-search {
   width: 100%;
-  padding: 11px 14px;
+  padding: 12px 14px;
   border: 0;
+  background: transparent;
+  font-weight: 700;
   outline: none;
+}
+.add-stop-search::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
 }
 .search-results {
   margin: 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--border);
 }
 .search-result {
   display: flex;
   flex-direction: column;
   gap: 2px;
   width: 100%;
-  padding: 9px 14px;
+  padding: 10px 14px;
   text-align: left;
   background: none;
   border: 0;
 }
 .search-result small {
   color: var(--text-muted);
+  font-size: 14px;
 }
 .search-result.highlighted {
-  background: var(--primary-soft);
+  background: var(--mustard);
+}
+.search-result.highlighted small {
+  color: var(--ink);
 }
 .search-empty {
-  padding: 9px 14px;
-  font-size: 13px;
+  padding: 10px 14px;
+  font-size: 14px;
 }
 
 .editor-actions {
@@ -238,7 +254,7 @@
   padding-top: 8px;
 }
 .save-state {
-  font-size: 13px;
+  font-size: 14px;
 }
 
 @media (max-width: 900px) {
@@ -248,9 +264,11 @@
     grid-template-rows: auto 50vh;
     height: auto;
   }
-}
-
-/* Panel content scrolls instead of shrinking to fit the viewport. */
-.editor-panel > * {
-  flex-shrink: 0;
+  .source-banner {
+    height: auto;
+    padding: 12px 16px;
+  }
+  .editor-panel {
+    padding: 20px 16px;
+  }
 }
