@@ -75,7 +75,7 @@ export function TripMap({ stops, segments, className, activeStopId, onStopClick,
         type: 'line',
         source: 'route',
         layout: { 'line-cap': 'round', 'line-join': 'round' },
-        paint: { 'line-color': '#ffffff', 'line-width': 8 },
+        paint: { 'line-color': '#0b0b0b', 'line-width': 9 },
       });
       map.addLayer({
         id: 'route',
@@ -83,14 +83,14 @@ export function TripMap({ stops, segments, className, activeStopId, onStopClick,
         source: 'route',
         filter: ['!=', ['get', 'estimate'], true],
         layout: { 'line-cap': 'round', 'line-join': 'round' },
-        paint: { 'line-color': '#e8743b', 'line-width': 5 },
+        paint: { 'line-color': '#e1ac10', 'line-width': 5 },
       });
       map.addLayer({
         id: 'route-estimate',
         type: 'line',
         source: 'route',
         filter: ['==', ['get', 'estimate'], true],
-        paint: { 'line-color': '#e8743b', 'line-width': 4, 'line-dasharray': [2, 1.5] },
+        paint: { 'line-color': '#e1ac10', 'line-width': 4, 'line-dasharray': [2, 1.5] },
       });
       setLoaded(true);
     });

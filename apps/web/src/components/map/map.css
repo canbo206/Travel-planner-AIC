@@ -1,9 +1,9 @@
-/* Figma: Screen 2/3 map — numbered green markers, orange route line. */
+/* Map: the route is a mustard centre line on asphalt; stops are square route plates. */
 .map {
   position: relative;
   min-height: 320px;
   height: 100%;
-  background: #e6ede4;
+  background: color-mix(in srgb, var(--paper) 90%, var(--ink));
 }
 .map-canvas {
   position: absolute;
@@ -12,35 +12,47 @@
 .map-marker {
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
+  width: 30px;
+  height: 30px;
   padding: 0;
-  border-radius: 50%;
-  border: 3px solid #fff;
-  background: var(--primary);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  border: 3px solid var(--ink);
+  border-radius: 0;
+  background: var(--mustard);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 900;
   transition: transform 0.15s;
 }
 .map-marker.active,
 .map-marker:hover {
   transform: scale(1.2);
-  background: var(--accent);
+  background: var(--ink);
+  color: var(--mustard);
 }
 .route-toast {
   position: absolute;
-  top: 24px;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 2;
   padding: 10px 16px;
-  border-radius: 999px;
-  background: var(--text);
-  color: #fff;
-  font-size: 13px;
-  font-weight: 600;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 15px;
+  font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-left: 6px solid var(--mustard);
+  animation: toast-in 0.25s ease-out both;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+}
+.maplibregl-ctrl-group {
+  border-radius: 0 !important;
+  box-shadow: none !important; /* taste-skill-ignore: removes MapLibre's own shadow */
+  border: 2px solid var(--ink);
 }

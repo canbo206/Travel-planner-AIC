@@ -1,4 +1,4 @@
-/* Figma: "Screen 2 · Trip Detail" — HTML & CSS panel */
+/* Trip page: map on the left, the itinerary on paper on the right. */
 .trip-detail {
   display: grid;
   grid-template-columns: 1fr 540px;
@@ -7,72 +7,90 @@
 .trip-panel {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding: 28px;
+  gap: 18px;
+  padding: 32px;
   background: var(--surface);
   overflow-y: auto;
-  border-left: 1px solid var(--border);
+}
+.trip-panel > * {
+  flex-shrink: 0;
 }
 .breadcrumb {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
+}
+.breadcrumb a {
+  font-weight: 700;
+  color: var(--ink);
 }
 .breadcrumb a:hover {
   text-decoration: underline;
 }
 .trip-panel h1 {
-  font-size: 28px;
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   margin: 0;
 }
 .byline {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 13px;
+  gap: 10px;
+  font-size: 15px;
   color: var(--text-muted);
 }
+.byline strong {
+  color: var(--ink);
+}
 .avatar.small {
-  width: 24px;
-  height: 24px;
-  font-size: 11px;
-  background: #c9b8e8;
+  width: 26px;
+  height: 26px;
+  font-size: 13px;
 }
 .source-credit {
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: var(--accent-soft);
-  font-size: 13px;
-  font-weight: 500;
+  padding: 12px 16px;
+  background: var(--signal-soft);
+  border-left: 6px solid var(--mustard);
+  font-size: 15px;
 }
 .source-credit a {
-  color: var(--accent);
-  font-weight: 600;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .description {
   margin: 0;
   line-height: 1.5;
+  max-width: 60ch;
 }
 .hint {
   margin: -8px 0 0;
-  font-size: 12px;
+  font-size: 14px;
   color: var(--text-muted);
 }
 
+/* Stats read like a mileage sign: ink plate, mustard figures. */
 .stats {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
   list-style: none;
   padding: 0;
   margin: 0;
+  background: var(--ink);
+  color: var(--paper);
 }
 .stat {
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 13px;
-  background: var(--primary-soft);
-  color: var(--primary);
+  padding: 12px 18px;
+  font-weight: 700;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+.stat + .stat {
+  border-left: 3px solid var(--surface);
+}
+.stat:first-child {
+  color: var(--mustard);
 }
 
 .actions {
@@ -84,9 +102,10 @@
 }
 .visibility-select {
   padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--paper);
+  font-weight: 700;
 }
 
 .day-tabs {
@@ -96,23 +115,26 @@
 }
 .tab {
   padding: 7px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--ink);
+  border-radius: 0;
   background: none;
-  color: var(--text-muted);
-  font-weight: 600;
-  font-size: 13px;
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 14px;
+  transition: background-color 0.15s;
+}
+.tab:hover {
+  background: var(--signal-soft);
 }
 .tab.active {
-  background: var(--text);
-  color: #fff;
-  border-color: transparent;
+  background: var(--ink);
+  color: var(--mustard);
 }
 
 .stop-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -120,63 +142,64 @@
 .stop {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  gap: 16px;
+  padding: 16px 16px 16px 10px;
   background: var(--bg);
+  border-left: 6px solid transparent;
+  transition: border-color 0.15s;
 }
 .stop:hover {
-  border-color: var(--primary);
+  border-left-color: var(--mustard);
 }
 .stop-number {
   flex: none;
   display: grid;
   place-items: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: #fff;
-  font-weight: 700;
-  font-size: 13px;
+  width: 30px;
+  height: 30px;
+  border: 3px solid var(--ink);
+  background: var(--mustard);
+  color: var(--ink);
+  font-weight: 900;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
 }
 .stop-text {
   flex: 1;
   min-width: 0;
 }
 .stop-text h4 {
-  margin: 4px 0;
-  font-size: 15px;
+  margin: 3px 0 4px;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: -0.01em;
 }
 .note {
   margin: 0;
-  font-size: 13px;
-  color: var(--text-muted);
-  line-height: 1.4;
+  font-size: 15px;
+  line-height: 1.45;
 }
 .activities {
-  margin: 6px 0 0;
+  margin: 8px 0 0;
   padding-left: 18px;
-  font-size: 13px;
+  font-size: 15px;
 }
 .photo-strip {
   display: flex;
   gap: 8px;
-  margin-top: 8px;
+  margin-top: 10px;
   overflow-x: auto;
 }
 .photo-strip figure {
   margin: 0;
 }
 .photo-strip figcaption {
-  font-size: 11px;
+  font-size: 13px;
   color: var(--text-muted);
 }
 .stop-photo {
-  width: 72px;
-  height: 72px;
-  border-radius: 8px;
+  width: 84px;
+  height: 84px;
   object-fit: cover;
 }
 
@@ -187,10 +210,6 @@
     height: auto;
   }
   .trip-panel {
-    border-left: 0;
+    padding: 24px 16px;
   }
-}
-
-.trip-panel > * {
-  flex-shrink: 0;
 }

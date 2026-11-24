@@ -79,7 +79,12 @@ function TripDetailView({ trip }: { trip: TripDetail }) {
         <h1>{trip.title}</h1>
         <div className="byline">
           <span className="avatar small">{trip.owner.username.slice(0, 1).toUpperCase()}</span>
-          by @{trip.owner.username} · ↻ {trip.recreateCount} recreations
+          <span>
+            by <strong>@{trip.owner.username}</strong> ·{' '}
+            {trip.recreateCount === 0
+              ? 'not recreated yet'
+              : `recreated ${trip.recreateCount} time${trip.recreateCount === 1 ? '' : 's'}`}
+          </span>
         </div>
         {trip.sourceTrip && (
           <div className="source-credit">
@@ -143,7 +148,7 @@ function TripDetailView({ trip }: { trip: TripDetail }) {
               onClick={() => requireSignIn(() => toggleSave.mutate())}
               disabled={toggleSave.isPending}
             >
-              {trip.isSaved ? '♥ Saved' : '♡ Save'}
+              {trip.isSaved ? 'Saved' : 'Save'}
             </button>
           </div>
         )}

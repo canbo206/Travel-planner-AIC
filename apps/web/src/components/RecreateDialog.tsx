@@ -34,28 +34,25 @@ export function RecreateDialog({ trip, open, onClose }: Props) {
 
   return (
     <dialog ref={ref} className="recreate-dialog" onClose={onClose} aria-labelledby="recreate-title">
-      <span className="dialog-icon" aria-hidden>
-        ↻
-      </span>
       <h2 id="recreate-title">Recreate this trip?</h2>
       <p>
         We'll copy “{trip.title}” into My Trips as a private draft. You can add, remove and reorder
-        stops — the original stays untouched.
+        stops. The original stays untouched.
       </p>
 
       <ul className="copy-list">
         <li>
-          <span className="ok">✓</span> All {trip.stopCount} stops, in order, with the driving route
+          All {trip.stopCount} stops, in order, with the driving route
         </li>
         <li>
-          <span className="ok">✓</span> Notes, activities and tips for each stop
+          Notes, activities and tips for each stop
         </li>
         <li>
-          <span className="ok">✓</span> Credit: “Based on @{trip.owner.username}'s trip” stays on your copy
+          Credit: “Based on @{trip.owner.username}'s trip” stays on your copy
         </li>
         {photoCount > 0 && (
           <li>
-            <span className="no">–</span> Photos stay with @{trip.owner.username} — add your own on the road
+            Photos stay with @{trip.owner.username}. Add your own on the road
           </li>
         )}
       </ul>

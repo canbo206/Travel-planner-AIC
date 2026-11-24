@@ -1,68 +1,67 @@
-/* Figma: "Screen 4 · Recreate dialog" — HTML & CSS panel */
+/* Recreate dialog: a sign-shaped card with a mustard top band. */
 .recreate-dialog::backdrop {
-  background: rgb(20 26 23 / 0.55);
+  background: rgb(11 11 11 / 0.6);
 }
 .recreate-dialog[open] {
-  width: min(520px, calc(100vw - 32px));
+  width: min(540px, calc(100vw - 32px));
   display: flex;
   flex-direction: column;
   gap: 18px;
-  padding: 28px 32px;
+  padding: 0 32px 28px;
   border: 0;
-  border-radius: 16px;
-  background: var(--surface);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
-}
-.dialog-icon {
-  display: grid;
-  place-items: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--accent-soft);
-  color: var(--accent);
-  font-size: 22px;
-  font-weight: 700;
+  border-radius: 0;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 24px 60px rgb(11 11 11 / 0.35); /* taste-skill-ignore: a dialog floats */
 }
 .recreate-dialog h2 {
-  margin: 0;
-  font-size: 24px;
+  margin: 0 -32px;
+  padding: 22px 32px 18px;
+  background: var(--mustard);
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  line-height: 0.95;
 }
 .recreate-dialog p {
   margin: 0;
-  color: var(--text-muted);
-  line-height: 1.4;
+  line-height: 1.45;
 }
 .copy-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
   margin: 0;
-  padding: 16px;
+  padding: 16px 18px;
   list-style: none;
-  background: var(--bg);
-  border-radius: 12px;
-  font-size: 14px;
+  background: var(--raised);
+  font-size: 15px;
 }
-.copy-list .ok {
-  color: var(--primary);
-  font-weight: 700;
+.copy-list li {
+  display: flex;
+  gap: 10px;
 }
-.copy-list .no {
-  color: var(--text-muted);
-  font-weight: 700;
+.copy-list li::before {
+  content: '';
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-top: 7px;
+  background: var(--ink);
 }
 .start-date {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
 }
 .start-date input {
   padding: 10px 14px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  border: 2px solid var(--control);
+  border-radius: 0;
+  background: var(--paper);
 }
 .dialog-actions {
   display: flex;
